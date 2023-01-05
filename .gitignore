@@ -1,0 +1,5 @@
+*.pem
+/infrastructure/.terraform
+*providers*
+*.terraform
+*terraform*

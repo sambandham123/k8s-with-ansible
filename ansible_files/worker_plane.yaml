@@ -1,0 +1,8 @@
+---
+- name: install K8s basic components on worker planes
+  hosts: all
+  remote_user: ubuntu
+  become: yes
+
+  roles:
+    - worker_plane
