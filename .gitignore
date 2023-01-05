@@ -3,3 +3,5 @@
 *providers*
 *.terraform
 *terraform*
+*token*
+*.pub*
