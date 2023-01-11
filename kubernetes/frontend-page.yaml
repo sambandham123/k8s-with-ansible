@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend-page
+  name: frontend-page
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-page
+  template:
+    metadata:
+      labels:
+        app: frontend-page
+    spec:
+      imagePullSecrets:
+        - name: docker-creds
+      containers:
+        - image: devopslearnerboy/website-visits:latest
+          name: website-visits
