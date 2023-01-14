@@ -1,0 +1,49 @@
+name: Website visits project
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Docker Login and Image Push 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Docker Login
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Image build
+        run: docker build -t devopslearnerboy/website-visits:latest -t devopslearnerboy/website-visits:$GITHUB_SHA ./Docker
+
+      - name: Push Image to Docker Hub with Latest tag 
+        run: docker push devopslearnerboy/website-visits:latest
+
+      - name: Push Image to Docker Hub with Github Hash Tag
+        run: docker push devopslearnerboy/website-visits:$GITHUB_SHA
+
+  deploy:
+    name: Deploy the kubernetes deployments
+    if: github.ref == 'refs/heads/master'
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set the Kubernetes context
+        uses: azure/k8s-set-context@v2
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Deploy to the Kubernetes cluster
+        uses: azure/k8s-deploy@v1
+        with:
+          namespace: default
+          manifests: |
+            kubernetes/frontend-page.yaml
+            kubernetes/frontend-page-service.yaml
+          images: |
+            devopslearnerboy/website-visits:${{ github.sha }}

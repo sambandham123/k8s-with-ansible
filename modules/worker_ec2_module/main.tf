@@ -21,6 +21,6 @@ resource "aws_instance" "worker_node" {
     }
 
     provisioner "local-exec" {
-        command = "ansible-playbook -i ${aws_instance.worker_node.public_ip}, --private-key ${var.key_path} ../ansible_files/worker_plane.yaml -vv"  
+        command = "ansible-playbook -i ${aws_instance.worker_node.public_ip}, --private-key ${var.key_path} ../ansible_files/worker_plane.yaml -vv" 
     }
 }
