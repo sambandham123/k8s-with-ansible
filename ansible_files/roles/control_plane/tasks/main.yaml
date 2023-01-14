@@ -84,6 +84,12 @@
     dest: ./
     flat: yes
 
+- name: Download the kube-config file for Github actions
+  fetch: 
+    src: $HOME/.kube/config
+    dest: ./
+    flat: yes
+
 - name: make the cluster public for github actions
   shell:
     cmd: |
