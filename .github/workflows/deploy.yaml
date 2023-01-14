@@ -1,8 +1,8 @@
 name: Website visits project
 on:
   push:
-    branches:
-      - master
+    paths:
+      - Docker
 
 jobs:
   build:
