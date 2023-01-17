@@ -109,7 +109,7 @@
       sudo mv /etc/kubernetes/pki/apiserver.key ~
       sudo kubeadm init phase certs apiserver --config kubeadm.yaml
 
-- name: regenarate the certs
+- name: restart the api server
   shell:
     cmd: |
       apiserver="$(crictl ps | grep -i kube-apiserver| grep -v pause | awk '{print $1}')"
